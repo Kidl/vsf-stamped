@@ -14,5 +14,6 @@ export const state: StampedState = {
       flagged: 0,
       spam: 0
     }
-  }
+  },
+  productsRating: []
 }

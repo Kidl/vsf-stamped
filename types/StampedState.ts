@@ -15,6 +15,14 @@ interface StampedPageData {
 }
 
 export interface StampedState {
+  productsRating: StampedProductRating[],
   currentProductReviews: any[],
   currentProductReviewsPageData: StampedPageData
+}
+
+export interface StampedProductRating {
+  productId: string,
+  rating: number,
+  count: number,
+  countQuestions: number
 }
