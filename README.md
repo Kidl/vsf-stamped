@@ -14,6 +14,7 @@
 ```
 
 ### API
+To `extensions` add:
 ```json
 "stamped": {
   "storeHash": "000000",
@@ -37,3 +38,6 @@ If you want to override `storeHash`, `publicKey` or `privateKey` for different s
   }
 }
 ```
+
+To `registeredExtensions` add `stamped`.
+Copy API/stamped to `src/api/ext`.
