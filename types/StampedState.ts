@@ -7,7 +7,7 @@ interface StampedPageDataSummary {
   spam: number;
 }
 
-interface StampedPageData {
+export interface StampedPageData {
   total: number;
   page: number;
   totalPages: number;
@@ -15,7 +15,7 @@ interface StampedPageData {
 }
 
 export interface StampedState {
-  productsRating: StampedProductRating[],
+  productsRating: { [key: string]: StampedProductRating },
   currentProductReviews: any[],
   currentProductReviewsPageData: StampedPageData
 }
