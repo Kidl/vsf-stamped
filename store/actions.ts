@@ -5,6 +5,7 @@ import { ActionTree } from 'vuex'
 import config from 'config'
 import { adjustMultistoreApiUrl, currentStoreView } from '@vue-storefront/core/lib/multistore'
 import fetch from 'isomorphic-fetch'
+import * as types from './mutation-types'
 
 interface StampedAddReviewPayload {
   productId: number;
@@ -97,6 +98,13 @@ const preparePayload = (product, review: StampedReview, productUrl: string, useS
       image = child.image
     }
   }
+  let childName = product.name
+  if (product.type_id == 'configurable') {
+    const child = product.configurable_children.find(child => child.sku == product.sku)
+    if (child && child.name) {
+      childName = child.name
+    }
+  }
   image = getThumbnailPath(image, 300, 300)
 
   data.append('productId', product.id)
@@ -107,7 +115,7 @@ const preparePayload = (product, review: StampedReview, productUrl: string, useS
   data.append('reviewTitle', review.title)
   data.append('reviewMessage', review.message)
   data.append('reviewRecommendProduct', review.recommendProduct + '')
-  data.append('productName', product.name)
+  data.append('productName', useSimpleSku && product.type_id == 'configurable' ? childName : product.name)
   data.append('productSKU', !useSimpleSku && product.parentSku ? product.parentSku : product.sku)
   data.append('productImageURL', image)
   data.append('productURL', productUrl)
@@ -144,25 +152,58 @@ export const actions: ActionTree<StampedState, any> = {
     }
   },
 
-  async loadReview ({}, { page = 1 }): Promise<any> {
-    // 1. Send request to VSF Api
-    // 2. Set it in state
-    // 3. Add support for page values like `next` & `previous`
-    // 4. Return status
-    return true
+  async loadReview ({ commit }, { productId }): Promise<Boolean> {
+    const { storeCode } = currentStoreView()
+    const stampedConfig: StampedConfig | undefined = stampedMultiStoreConfig(config, !!storeCode ? storeCode : null)
+    if (!stampedConfig) {
+      console.error('[StampedIO] Bad config')
+      return
+    }
+    const placeholderUrl = `https://stamped.io/api/widget/reviews?productIds=${productId}&productType&email&isWithPhotos&minRating&take&page&dateFrom&dateTo&sortReviews&tags&storeUrl=${stampedConfig.storeHash}&apiKey=${stampedConfig.publicKey}`
+    try {
+      const { data } = await (await fetch(placeholderUrl)).json()
+      commit(types.SET_CURRENT_PRODUCT_REVIEWS, data)
+      return true
+    } catch (err) {
+      console.error('[StampedIO] ', err)
+      return false
+    }
   },
 
-  async getRatings ({}, {}): Promise<StampedProductRating> {
+  async getRatings ({ commit }, { productId }): Promise<Boolean> {
 
-    // 1. Send request to Stamped Api
-    // 2. Set it in state
-    // 3. Return it
+    const { storeCode } = currentStoreView()
+    const stampedConfig: StampedConfig | undefined = stampedMultiStoreConfig(config, !!storeCode ? storeCode : null)
+    if (!stampedConfig) {
+      console.error('[StampedIO] Bad config')
+      return
+    }
+    const placeholderUrl = 'http://stamped.io/api/widget/badges'
+    try {
+      const [ rating, ] = await (await fetch(placeholderUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          productIds: [
+            {
+              productId
+            }
+          ],
+          apiKey: stampedConfig.publicKey,
+          storeUrl: stampedConfig.storeHash
+        })
+      })).json()
 
-    return {
-      "productId": "1",
-      "rating": 4.5,
-      "count": 2,
-      "countQuestions": 0
+      commit(types.SET_PRODUCT_RATING, { rating: {
+        rating: rating.rating,
+        count: rating.count
+      }, productId })
+      return true
+    } catch (err) {
+      console.error('[StampedIO] ', err)
+      return false
     }
   }
 

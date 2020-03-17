@@ -13,31 +13,16 @@
 }
 ```
 
-### API
-To `extensions` add:
+If you want to override `storeHash` or `publicKey` for different store, do it like that:
 ```json
 "stamped": {
   "storeHash": "000000",
-  "publicKey": "pubkey-DFJASDJASKLDJASLKDJK",
-  "privateKey": "key-SDKLADJKLASDKLASDJKLASLK"
-}
-```
-
-If you want to override `storeHash`, `publicKey` or `privateKey` for different store, do it like that:
-```json
-"stamped": {
-  "storeHash": "000000",
-  "publicKey": "pubkey-DFJASDJASKLDJASLKDJK",
-  "privateKey": "key-SDKLADJKLASDKLASDJKLASLK",
+  "publicKey": "pubkey-DFJASDJASKLDJASLKDJK"
   "storeCode": {
     "es": {
       "storeHash": "000001",
-      "publicKey": "pubkey-DFJASDJASKLDJASLKDJK",
-      "privateKey": "key-SDKLADJKLASDKLASDJKLASLK"
+      "publicKey": "pubkey-DFJASDJASKLDJASLKDJK"
     }
   }
 }
 ```
-
-To `registeredExtensions` add `stamped`.
-Copy API/stamped to `src/api/ext`.
