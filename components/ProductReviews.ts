@@ -29,9 +29,9 @@ export default (productId: string) => ({
   },
 
   async beforeMount () {
-    if (!this.productReviews || !this.productReviews.length) {
-      await this.fetchReviews();
-    }
+    // if (!this.productReviews || !this.productReviews.length) {
+    await this.fetchReviews();
+    // }
   }
 
 })

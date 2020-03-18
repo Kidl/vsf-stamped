@@ -19,7 +19,7 @@ export default (productId: string) => ({
           return {
             mocked: true,
             count: 0,
-            rating: 5
+            rating: 0
           }
         }
       }
@@ -27,7 +27,7 @@ export default (productId: string) => ({
       return {
         mocked: true,
         count: 0,
-        rating: 5
+        rating: 0
       }
     }
   },
@@ -47,9 +47,7 @@ export default (productId: string) => ({
   },
 
   async beforeMount () {
-    if (!this.productRatings || this.productRatings.mocked) {
-      await this.fetchProductRatings();
-    }
+    await this.fetchProductRatings();
   }
 
 })

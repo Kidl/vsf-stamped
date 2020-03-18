@@ -23,7 +23,7 @@ export default (product: string) => ({
       title: '',
       rating: 5,
       message: '',
-      recommendProduct: false,
+      recommendProduct: true,
       sent: false,
       isSending: false
     }
