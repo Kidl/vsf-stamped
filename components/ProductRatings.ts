@@ -1,11 +1,4 @@
-import { StampedModule } from 'src/modules/vsf-stamped'
-import { registerModule } from '@vue-storefront/core/lib/modules'
-
 export default (productId: string) => ({
-
-  beforeCreate () {
-    registerModule(StampedModule)
-  },
   
   watch: {
     async [productId]() {

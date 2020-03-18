@@ -1,27 +1,27 @@
 import { getThumbnailPath } from '@vue-storefront/core/helpers';
-import { StampedProductRating } from './../types/StampedState';
+// import { StampedProductRating } from './../types/StampedState';
 import { StampedState } from '../types/StampedState'
 import { ActionTree } from 'vuex'
 import config from 'config'
-import { adjustMultistoreApiUrl, currentStoreView } from '@vue-storefront/core/lib/multistore'
+import { currentStoreView } from '@vue-storefront/core/lib/multistore'
 import fetch from 'isomorphic-fetch'
 import * as types from './mutation-types'
 
-interface StampedAddReviewPayload {
-  productId: number;
-  author: string;
-  email: string;
-  location: string;
-  reviewRating: number;
-  reviewTitle: string;
-  reviewMessage: string;
-  reviewRecommendProduct: boolean;
-  productName: string;
-  productSKU: string;
-  productImageURL: string;
-  productURL: string;
-  reviewSource: string;
-}
+// interface StampedAddReviewPayload {
+//   productId: number;
+//   author: string;
+//   email: string;
+//   location: string;
+//   reviewRating: number;
+//   reviewTitle: string;
+//   reviewMessage: string;
+//   reviewRecommendProduct: boolean;
+//   productName: string;
+//   productSKU: string;
+//   productImageURL: string;
+//   productURL: string;
+//   reviewSource: string;
+// }
 interface StampedStoreConfig {
   publicKey: string,
   storeHash: string,
