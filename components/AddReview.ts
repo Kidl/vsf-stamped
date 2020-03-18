@@ -24,12 +24,14 @@ export default (product: string) => ({
       rating: 5,
       message: '',
       recommendProduct: false,
-      sent: false
+      sent: false,
+      isSending: false
     }
   },
 
   methods: {
     async addReview () {
+      this.isSending = true
       this.sent = await this.$store.dispatch('vsf-stamped/addReview', {
         review: {
           author: this.author,
@@ -42,6 +44,7 @@ export default (product: string) => ({
         product: this[product],
         productUrl: window.location.href
       })
+      this.isSending = false
     }
   }
 
