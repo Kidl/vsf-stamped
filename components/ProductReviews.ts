@@ -2,7 +2,7 @@ export default (productId: string) => ({
 
   watch: {
     async [productId]() {
-      await this.fetchProductReviews()
+      await this.fetchReviews()
     }
   },
 

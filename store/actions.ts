@@ -99,15 +99,21 @@ const preparePayload = (product, review: StampedReview, productUrl: string, useS
     }
   }
   let childName = product.name
+  let childId = product.id
   if (product.type_id == 'configurable') {
     const child = product.configurable_children.find(child => child.sku == product.sku)
-    if (child && child.name) {
-      childName = child.name
+    if (child) {
+      if (child.name) {
+        childName = child.name
+      }
+      if (child.id) {
+        childId = child.id
+      }
     }
   }
   image = getThumbnailPath(image, 300, 300)
 
-  data.append('productId', product.id)
+  data.append('productId', useSimpleSku ? childId : product.id)
   data.append('author', review.author)
   data.append('email', review.email)
   data.append('location', i18n.fullCountryName)
@@ -119,7 +125,7 @@ const preparePayload = (product, review: StampedReview, productUrl: string, useS
   data.append('productSKU', !useSimpleSku && product.parentSku ? product.parentSku : product.sku)
   data.append('productImageURL', image)
   data.append('productURL', productUrl)
-  data.append('reviewSource', storeCode ? `pwa_${storeCode}` : 'pwa')
+  data.append('reviewSource', 'pwa')
 
   return data
 }
