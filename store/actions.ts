@@ -49,7 +49,8 @@ const stampedMultiStoreConfig = (config, storeCode = null): StampedStoreConfig |
   // Find base
   const requiredKeys = [
     'storeHash',
-    'publicKey'
+    'publicKey',
+    'products'
   ]
 
   for (let key of requiredKeys) {
@@ -69,6 +70,10 @@ const stampedMultiStoreConfig = (config, storeCode = null): StampedStoreConfig |
   }
 
   for (let key of requiredKeys) {
+    // products is not required
+    if (key == 'products') {
+      continue
+    }
     if (!currentConfig[key]) {
       console.log('Stamped extension badly configured')
       return
