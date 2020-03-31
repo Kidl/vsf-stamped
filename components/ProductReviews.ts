@@ -1,5 +1,11 @@
 export default (productId: string) => ({
 
+  data () {
+    return {
+      loader: false
+    }
+  },
+
   watch: {
     async [productId]() {
       await this.fetchReviews()
@@ -17,9 +23,11 @@ export default (productId: string) => ({
   methods: {
 
     async fetchReviews () {
+      this.loader = true;
       await this.$store.dispatch('vsf-stamped/loadReview', {
         productId: this[productId]
       })
+      this.loader = false;
     }
 
   },
