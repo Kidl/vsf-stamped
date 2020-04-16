@@ -189,7 +189,7 @@ export const actions: ActionTree<StampedState, any> = {
       console.error('[StampedIO] Bad config')
       return
     }
-    const placeholderUrl = 'http://stamped.io/api/widget/badges'
+    const placeholderUrl = 'https://stamped.io/api/widget/badges'
     try {
       const [ rating, ] = await (await fetch(placeholderUrl, {
         method: 'POST',
