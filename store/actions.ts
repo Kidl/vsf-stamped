@@ -37,7 +37,16 @@ interface StampedConfig extends StampedStoreConfig{
   }
 }
 
-const stampedMultiStoreConfig = (config, storeCode = null): StampedStoreConfig | undefined  => {
+interface StampedReview {
+  author: string;
+  email: string;
+  rating: number;
+  title: string;
+  message: string;
+  recommendProduct: boolean;
+}
+
+const stampedMultiStoreConfig = (): StampedStoreConfig | undefined  => {
   if (!config.stamped) {
     console.log('Stamped extension not configured')
     return
@@ -60,7 +69,8 @@ const stampedMultiStoreConfig = (config, storeCode = null): StampedStoreConfig |
   }
 
   // Overwrite from storeCode
-  if (storeCode) {
+  const { storeCode } = currentStoreView()
+  if (!!storeCode) {
     if (stampedConfig.storeCode && stampedConfig.storeCode[storeCode]) {
       currentConfig = {
         ...currentConfig,
@@ -83,17 +93,8 @@ const stampedMultiStoreConfig = (config, storeCode = null): StampedStoreConfig |
   return (<StampedStoreConfig>currentConfig)
 }
 
-interface StampedReview {
-  author: string;
-  email: string;
-  rating: number;
-  title: string;
-  message: string;
-  recommendProduct: boolean;
-}
-
 const preparePayload = (product, review: StampedReview, productUrl: string, useSimpleSku: Boolean): URLSearchParams => {
-  const { i18n, storeCode } = currentStoreView()
+  const { i18n } = currentStoreView()
   const data = new URLSearchParams()
 
   let image = product.image
@@ -138,8 +139,7 @@ const preparePayload = (product, review: StampedReview, productUrl: string, useS
 export const actions: ActionTree<StampedState, any> = {
 
   async addReview ({}, { product, review, productUrl }): Promise<Boolean> {
-    const { storeCode } = currentStoreView()
-    const stampedConfig: StampedConfig | undefined = stampedMultiStoreConfig(config, !!storeCode ? storeCode : null)
+    const stampedConfig: StampedConfig | undefined = stampedMultiStoreConfig()
     if (!stampedConfig) {
       console.error('[StampedIO] Bad config')
       return
@@ -164,8 +164,7 @@ export const actions: ActionTree<StampedState, any> = {
   },
 
   async loadReview ({ commit }, { productId }): Promise<Boolean> {
-    const { storeCode } = currentStoreView()
-    const stampedConfig: StampedConfig | undefined = stampedMultiStoreConfig(config, !!storeCode ? storeCode : null)
+    const stampedConfig: StampedConfig | undefined = stampedMultiStoreConfig()
     if (!stampedConfig) {
       console.error('[StampedIO] Bad config')
       return
@@ -183,8 +182,7 @@ export const actions: ActionTree<StampedState, any> = {
 
   async getRatings ({ commit }, { productId }): Promise<Boolean> {
 
-    const { storeCode } = currentStoreView()
-    const stampedConfig: StampedConfig | undefined = stampedMultiStoreConfig(config, !!storeCode ? storeCode : null)
+    const stampedConfig: StampedConfig | undefined = stampedMultiStoreConfig()
     if (!stampedConfig) {
       console.error('[StampedIO] Bad config')
       return

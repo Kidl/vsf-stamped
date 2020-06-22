@@ -2,7 +2,7 @@ export default (productId: string) => ({
 
   data () {
     return {
-      loader: false
+      loadingReviews: false
     }
   },
 
@@ -23,11 +23,11 @@ export default (productId: string) => ({
   methods: {
 
     async fetchReviews () {
-      this.loader = true;
+      this.loadingReviews = true;
       await this.$store.dispatch('vsf-stamped/loadReview', {
         productId: this[productId]
       })
-      this.loader = false;
+      this.loadingReviews = false;
     }
 
   },
@@ -37,9 +37,7 @@ export default (productId: string) => ({
   },
 
   async beforeMount () {
-    // if (!this.productReviews || !this.productReviews.length) {
     await this.fetchReviews();
-    // }
   }
 
 })

@@ -36,7 +36,7 @@ export default (productId: string) => ({
 
     async fetchProductRatings () {
       await this.$store.dispatch('vsf-stamped/getRatings', {
-        productId: this[productId]
+        productId: this.productId
       })
     }
 

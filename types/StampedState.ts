@@ -17,7 +17,6 @@ export interface StampedPageData {
 export interface StampedState {
   productsRating: { [key: string]: StampedProductRating },
   currentProductReviews: any[],
-  // currentProductReviewsPageData: StampedPageData
 }
 
 export interface StampedProductRating {

@@ -1,50 +1,54 @@
 import { required } from 'vuelidate/lib/validators'
-export default (product: string) => ({
+export default (productKey: string, namespace: string = 'review') => ({
 
   validations: {
-    author: {
-      required
-    },
-    email: {
-      required
-    },
-    title: {
-      required
-    },
-    message: {
-      required
+    [namespace]: {
+      author: {
+        required
+      },
+      email: {
+        required
+      },
+      title: {
+        required
+      },
+      message: {
+        required
+      }
     }
   },
 
   data () {
     return {
-      author: '',
-      email: '',
-      title: '',
-      rating: 5,
-      message: '',
-      recommendProduct: true,
-      sent: false,
-      isSending: false
+      [namespace]: {
+        author: '',
+        email: '',
+        title: '',
+        rating: 5,
+        message: '',
+        recommendProduct: true,
+        sent: false,
+        isSending: false
+      }
     }
   },
 
   methods: {
     async addReview () {
-      this.isSending = true
-      this.sent = await this.$store.dispatch('vsf-stamped/addReview', {
+      this[namespace].isSending = true
+      this[namespace].sent = await this.$store.dispatch('vsf-stamped/addReview', {
         review: {
-          author: this.author,
-          email: this.email,
-          rating: this.rating,
-          title: this.title,
-          message: this.message,
-          recommendProduct: this.recommendProduct
+          author: this[namespace].author,
+          email: this[namespace].email,
+          rating: this[namespace].rating,
+          title: this[namespace].title,
+          message: this[namespace].message,
+          recommendProduct: this[namespace].recommendProduct
         },
-        product: this[product],
+        product: this[productKey],
         productUrl: window.location.href
       })
-      this.isSending = false
+      this[namespace].isSending = false
     }
   }
 
