@@ -23,7 +23,7 @@ If you want to override `storeHash` or `publicKey` for different store, do it li
 ```json
 "stamped": {
   "storeHash": "000000",
-  "publicKey": "pubkey-DFJASDJASKLDJASLKDJK"
+  "publicKey": "pubkey-DFJASDJASKLDJASLKDJK",
   "storeCode": {
     "es": {
       "storeHash": "000001",
